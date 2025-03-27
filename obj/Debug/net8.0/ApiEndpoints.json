@@ -1,0 +1,76 @@
+[
+  {
+    "ContainingType": "BizsolETask_Api.Controllers.MasterController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/Master/ChangePassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "EmployeeMaster",
+        "Type": "BizsolETask_Api.Models.TY_EmployeeMaster",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BizsolETask_Api.Controllers.MasterController",
+    "Method": "GetEmployeeMasterByCode",
+    "RelativePath": "api/Master/GetEmployeeMasterByCode",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Code",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BizsolETask_Api.Controllers.MasterController",
+    "Method": "GetEmployeeMasterList",
+    "RelativePath": "api/Master/GetEmployeeMasterList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BizsolETask_Api.Controllers.MasterController",
+    "Method": "GetUserModuleMasterList",
+    "RelativePath": "api/Master/GetUserModuleMasterList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserType",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BizsolETask_Api.Controllers.MasterController",
+    "Method": "SaveEmployeeMaster",
+    "RelativePath": "api/Master/SaveEmployeeMaster",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "EmployeeMaster",
+        "Type": "BizsolETask_Api.Models.TY_EmployeeMaster",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

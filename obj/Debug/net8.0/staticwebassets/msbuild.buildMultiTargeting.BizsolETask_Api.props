@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\BizsolETask_Api.props" />
+</Project>
