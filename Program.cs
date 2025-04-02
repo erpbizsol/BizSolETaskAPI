@@ -20,6 +20,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IUserModuleMaster, UserModuleMasterService>();
 builder.Services.AddTransient<IEmployeeMaster, EmployeeMasterService>();
+builder.Services.AddTransient<IStatusMaster, StatusMasterService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
