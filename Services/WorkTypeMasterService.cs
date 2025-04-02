@@ -2,10 +2,11 @@
 using Dapper;
 using System.Data.SqlClient;
 using System.Data;
+using BizsolETask_Api.Interface;
 
 namespace BizsolETask_Api.Services
 {
-    public class WorkTypeMasterService
+    public class WorkTypeMasterService: IWorkTypeMaster
     {
         public async Task<IEnumerable<dynamic>> GetWorkTypeMasterList(BizsolETaskConnectionString bizsolESMSConnectionDetails)
         {
