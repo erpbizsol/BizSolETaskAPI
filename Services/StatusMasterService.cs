@@ -53,8 +53,8 @@ namespace BizsolETask_Api.Services
                 parameters.Add("Code", StatusMaster.Code);
                 parameters.Add("Mode", "SAVEDATA");
                 parameters.Add("UserMaster_Code", StatusMaster.UserMaster_Code);
-                parameters.Add("StatusName", StatusMaster.StatusName);
-                parameters.Add("StatusDescription", StatusMaster.StatusDescription);
+                parameters.Add("StatusName", StatusMaster.StatusName.Trim());
+                parameters.Add("StatusDescription", StatusMaster.StatusDescription.Trim());
                
                 var result = await conn.QueryAsync<dynamic>("USP_StatusMaster", parameters, commandType: CommandType.StoredProcedure);
 

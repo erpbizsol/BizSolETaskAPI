@@ -13,12 +13,14 @@ namespace BizsolETask_Api.Controllers
         private readonly IEmployeeMaster _EmployeeMasterMaster;
         private readonly IStatusMaster _StatusMaster;
         private readonly IWorkTypeMaster _WorkTypeMaster;
-        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster)
+        private readonly IEmployeeRatePerHourDetails _EmployeeRatePerHourDetails;
+        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails)
         {
             _UserModuleMaster = IUserModuleMaster;
             _EmployeeMasterMaster = employeeMasterMaster;
             _StatusMaster = statusMaster;
-            _WorkTypeMaster = workTypeMaster;   
+            _WorkTypeMaster = workTypeMaster;
+            _EmployeeRatePerHourDetails= employeeRatePerHourDetails;
         }
 
         #region EmployeeMaster
@@ -382,6 +384,100 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpPost]
+        [Route("ImportWorkTypeMaster")]
+        public async Task<IActionResult> ImportWorkTypeMaster([FromBody] IEnumerable<TY_WorkTypeMaster> WorkTypeMaster, int UserMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _WorkTypeMaster.ImportWorkTypeMaster(_bizsolESMSConnectionDetails, WorkTypeMaster, UserMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         #endregion WorkTypeMaster
+
+        #region EmployeeRatePerHourDetails 
+
+        [HttpGet]
+        [Route("GetEmployeeRatePerHourDetails")]
+        public async Task<IActionResult> GetEmployeeRatePerHourDetails(int EmployeeMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _EmployeeRatePerHourDetails.GetEmployeeRatePerHourDetails(_bizsolESMSConnectionDetails, EmployeeMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveEmployeeRatePerHourDetails")]
+        public async Task<IActionResult> SaveEmployeeRatePerHourDetails([FromBody] TY_EmployeeRatePerHourDetails EmployeeRatePerHourDetails)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _EmployeeRatePerHourDetails.SaveEmployeeRatePerHourDetails(_bizsolESMSConnectionDetails, EmployeeRatePerHourDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("DeleteEmployeeRatePerHourDetails")]
+        public async Task<IActionResult> DeleteEmployeeRatePerHourDetails(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _EmployeeRatePerHourDetails.DeleteEmployeeRatePerHourDetails(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion EmployeeRatePerHourDetails
     }
 }

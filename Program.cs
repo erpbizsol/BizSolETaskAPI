@@ -22,6 +22,7 @@ builder.Services.AddTransient<IUserModuleMaster, UserModuleMasterService>();
 builder.Services.AddTransient<IEmployeeMaster, EmployeeMasterService>();
 builder.Services.AddTransient<IStatusMaster, StatusMasterService>();
 builder.Services.AddTransient<IWorkTypeMaster, WorkTypeMasterService>();
+builder.Services.AddTransient<IEmployeeRatePerHourDetails, EmployeeRatePerHourDetailsService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
