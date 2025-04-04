@@ -456,7 +456,7 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("DeleteEmployeeRatePerHourDetails")]
         public async Task<IActionResult> DeleteEmployeeRatePerHourDetails(int Code)
         {
