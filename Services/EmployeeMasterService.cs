@@ -19,6 +19,19 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetEmployeeMaster(BizsolETaskConnectionString bizsolESMSConnectionDetails, string IsActive, string EmployeeType)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "EMPLOYEETYPE");
+                parameters.Add("IsActive", IsActive.Trim());
+                parameters.Add("EmployeeType", EmployeeType.Trim());
+                var result = await conn.QueryAsync<dynamic>("USP_EmployeeMaster", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
         public async Task<dynamic> GetEmployeeMasterByCode(BizsolETaskConnectionString bizsolESMSConnectionDetails,int Code)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))

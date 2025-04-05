@@ -5,6 +5,7 @@ namespace BizsolETask_Api.Interface
     public interface IEmployeeMaster
     {
         public abstract Task<IEnumerable<dynamic>> GetEmployeeMasterList(BizsolETaskConnectionString BizsolETaskConnectionString);
+        public abstract Task<IEnumerable<dynamic>> GetEmployeeMaster(BizsolETaskConnectionString BizsolETaskConnectionString,string IsActive,string EmployeeType);
         public abstract Task<dynamic> GetEmployeeMasterByCode(BizsolETaskConnectionString BizsolETaskConnectionString,int Code);
         public abstract Task<dynamic> ChangeEmployeeStatus(BizsolETaskConnectionString BizsolETaskConnectionString,int Code);
         public abstract Task<dynamic> GetExcelTemplate(BizsolETaskConnectionString BizsolETaskConnectionString,string Mode,string WithData);

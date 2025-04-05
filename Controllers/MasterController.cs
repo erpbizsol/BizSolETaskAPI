@@ -13,14 +13,16 @@ namespace BizsolETask_Api.Controllers
         private readonly IEmployeeMaster _EmployeeMasterMaster;
         private readonly IStatusMaster _StatusMaster;
         private readonly IWorkTypeMaster _WorkTypeMaster;
+        private readonly IClientMaster _ClientMaster;
         private readonly IEmployeeRatePerHourDetails _EmployeeRatePerHourDetails;
-        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails)
+        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster)
         {
             _UserModuleMaster = IUserModuleMaster;
             _EmployeeMasterMaster = employeeMasterMaster;
             _StatusMaster = statusMaster;
             _WorkTypeMaster = workTypeMaster;
-            _EmployeeRatePerHourDetails= employeeRatePerHourDetails;
+            _EmployeeRatePerHourDetails = employeeRatePerHourDetails;
+            _ClientMaster = clientMaster;
         }
 
         #region EmployeeMaster
@@ -58,6 +60,28 @@ namespace BizsolETask_Api.Controllers
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
                     var result = await _EmployeeMasterMaster.GetEmployeeMasterList(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetEmployeeMaster")]
+        public async Task<IActionResult> GetEmployeeMaster(string IsActive,string? EmployeeType = "")
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _EmployeeMasterMaster.GetEmployeeMaster(_bizsolESMSConnectionDetails,IsActive,EmployeeType);
                     return Ok(result);
                 }
                 else
@@ -479,5 +503,119 @@ namespace BizsolETask_Api.Controllers
             }
         }
         #endregion EmployeeRatePerHourDetails
+
+        #region ClientMaster
+        [HttpGet]
+        [Route("GetClientMasterList")]
+        public async Task<IActionResult> GetClientMasterList()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ClientMaster.GetClientMasterList(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetClientMasterByCode")]
+        public async Task<IActionResult> GetClientMasterByCode(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ClientMaster.GetClientMasterByCode(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("SaveClientMaster")]
+        public async Task<IActionResult> SaveClientMaster([FromBody] TY_ClientMaster ClientMaster)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ClientMaster.SaveClientMaster(_bizsolESMSConnectionDetails, ClientMaster);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("DeleteClientMaster")]
+        public async Task<IActionResult> DeleteClientMaster(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ClientMaster.DeleteClientMaster(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("ImportClientMaster")]
+        public async Task<IActionResult> ImportClientMaster([FromBody] IEnumerable<TY_ClientMaster> ClientMaster, int UserMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ClientMaster.ImportClientMaster(_bizsolESMSConnectionDetails, ClientMaster, UserMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        #endregion ClientMaster
     }
 }
