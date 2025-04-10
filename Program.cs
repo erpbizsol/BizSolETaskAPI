@@ -24,6 +24,7 @@ builder.Services.AddTransient<IStatusMaster, StatusMasterService>();
 builder.Services.AddTransient<IWorkTypeMaster, WorkTypeMasterService>();
 builder.Services.AddTransient<IEmployeeRatePerHourDetails, EmployeeRatePerHourDetailsService>();
 builder.Services.AddTransient<IClientMaster, ClientMasterService>();
+builder.Services.AddTransient<ITimeSheet, TimeSheetService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

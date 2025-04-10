@@ -15,7 +15,8 @@ namespace BizsolETask_Api.Controllers
         private readonly IWorkTypeMaster _WorkTypeMaster;
         private readonly IClientMaster _ClientMaster;
         private readonly IEmployeeRatePerHourDetails _EmployeeRatePerHourDetails;
-        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster)
+        private readonly ITimeSheet _ITimeSheet;
+        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet)
         {
             _UserModuleMaster = IUserModuleMaster;
             _EmployeeMasterMaster = employeeMasterMaster;
@@ -23,6 +24,7 @@ namespace BizsolETask_Api.Controllers
             _WorkTypeMaster = workTypeMaster;
             _EmployeeRatePerHourDetails = employeeRatePerHourDetails;
             _ClientMaster = clientMaster;
+            _ITimeSheet = iTimeSheet;
         }
 
         #region EmployeeMaster
@@ -617,5 +619,56 @@ namespace BizsolETask_Api.Controllers
         }
 
         #endregion ClientMaster
+
+        #region TimeSheet
+
+        [HttpGet]
+        [Route("GetClientList")]
+        public async Task<IActionResult> GetClientList()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITimeSheet.GetClientList(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetWorkTypeList")]
+        public async Task<IActionResult> GetWorkTypeList()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITimeSheet.GetWorkTypeList(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        #endregion TimeSheet
+
     }
 }
