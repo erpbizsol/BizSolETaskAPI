@@ -668,6 +668,28 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("SaveTimeSheetMaster")]
+        public async Task<IActionResult> SaveTimeSheetMaster([FromBody] Vw_TimeSheet viewModel)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITimeSheet.SaveTimeSheetMaster(_bizsolESMSConnectionDetails, viewModel);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion TimeSheet
 
     }
