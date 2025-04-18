@@ -30,6 +30,20 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+
+        public async Task<IEnumerable<dynamic>> GetEmpDateList(BizsolETaskConnectionString bizsolESMSConnectionDetails, int EmployeeName, string WorkDate)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "GetData");
+                parameters.Add("EmployeeName", EmployeeName);
+                parameters.Add("Date", WorkDate);
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
         public async Task<List<dynamic>> SaveTimeSheetMaster(BizsolETaskConnectionString bizsolESMSConnectionDetails, Vw_TimeSheet viewModel)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
@@ -68,6 +82,18 @@ namespace BizsolETask_Api.Services
                 }
                 parameters.Add("TimeSheet", timeSheetTable.AsTableValuedParameter("TY_TimeSheetDetail"));
                 var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
+        public async Task<dynamic> Delete(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "DELETE");
+                parameters.Add("Code", Code);
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
+
                 return result.ToList();
             }
         }

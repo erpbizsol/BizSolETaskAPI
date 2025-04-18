@@ -669,6 +669,29 @@ namespace BizsolETask_Api.Controllers
         }
 
         [HttpPost]
+        [Route("GetEmpDateList")]
+        public async Task<IActionResult> GetEmpDateList(int EmployeeName, string WorkDate)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITimeSheet.GetEmpDateList(_bizsolESMSConnectionDetails,EmployeeName,WorkDate);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
         [Route("SaveTimeSheetMaster")]
         public async Task<IActionResult> SaveTimeSheetMaster([FromBody] Vw_TimeSheet viewModel)
         {
@@ -678,6 +701,29 @@ namespace BizsolETask_Api.Controllers
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
                     var result = await _ITimeSheet.SaveTimeSheetMaster(_bizsolESMSConnectionDetails, viewModel);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITimeSheet.Delete(_bizsolESMSConnectionDetails, Code);
                     return Ok(result);
                 }
                 else
