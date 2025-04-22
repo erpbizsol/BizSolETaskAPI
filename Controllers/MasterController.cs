@@ -624,14 +624,14 @@ namespace BizsolETask_Api.Controllers
 
         [HttpGet]
         [Route("GetClientList")]
-        public async Task<IActionResult> GetClientList()
+        public async Task<IActionResult> GetClientList(int EmployeeName)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _ITimeSheet.GetClientList(_bizsolESMSConnectionDetails);
+                    var result = await _ITimeSheet.GetClientList(_bizsolESMSConnectionDetails, EmployeeName);
                     return Ok(result);
                 }
                 else
@@ -716,14 +716,37 @@ namespace BizsolETask_Api.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public async Task<IActionResult> Delete(int Code)
+        public async Task<IActionResult> Delete(int Code,int TimeSheetDetail_Code)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _ITimeSheet.Delete(_bizsolESMSConnectionDetails, Code);
+                    var result = await _ITimeSheet.Delete(_bizsolESMSConnectionDetails, Code, TimeSheetDetail_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("TimeSheetRemark")]
+        public async Task<IActionResult> TimeSheetRemark(int Code, string Remark)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITimeSheet.TimeSheetRemark(_bizsolESMSConnectionDetails, Code, Remark);
                     return Ok(result);
                 }
                 else

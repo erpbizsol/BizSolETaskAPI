@@ -8,13 +8,14 @@ namespace BizsolETask_Api.Services
 {
     public class TimeSheetService : ITimeSheet
     {
-        public async Task<IEnumerable<dynamic>> GetClientList(BizsolETaskConnectionString bizsolESMSConnectionDetails)
+        public async Task<IEnumerable<dynamic>> GetClientList(BizsolETaskConnectionString bizsolESMSConnectionDetails ,int EmployeeName)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("Mode", "CLIENTTYPE");
-                var result = await conn.QueryAsync<dynamic>("USP_DropDown", parameters, commandType: CommandType.StoredProcedure);
+                parameters.Add("Mode", "GETDEP");
+                parameters.Add("EmployeeName", EmployeeName);
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
 
                 return result.ToList();
             }
@@ -44,54 +45,49 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
-        public async Task<List<dynamic>> SaveTimeSheetMaster(BizsolETaskConnectionString bizsolESMSConnectionDetails, Vw_TimeSheet viewModel)
+        public async Task<dynamic> SaveTimeSheetMaster(BizsolETaskConnectionString bizsolESMSConnectionDetails, Vw_TimeSheet TimeSheetMaster)
         {
-            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            var TY_STRUCTUREArry = CommonFunctions.DataTableArrayExecuteSqlQueryWithParameter(bizsolESMSConnectionDetails.ConnectionSql, $"exec [dbo].[USP_TimeSheetMasterNew] @Mode='TABLE_STRUCTURE'", null);
+
+            using (IDbConnection conn = new
+            SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
                 DynamicParameters parameters = new DynamicParameters();
 
-                // Extract master
-                var master = viewModel.TimeSheetMastre;
-
                 parameters.Add("Mode", "SAVEDATA");
-                parameters.Add("Code", master.Code);
-                parameters.Add("EmployeeName", master.EmployeeName);
-                parameters.Add("Date", master.Date);
-                parameters.Add("Remarks", master.Remarks);
-                parameters.Add("UserMaster_Code", master.UserMaster_Code);
+                parameters.Add("Code", TimeSheetMaster.TimeSheetMaster.FirstOrDefault().Code);
+                parameters.Add("TimeSheetDetail_Code", TimeSheetMaster.TimeSheetDetail.FirstOrDefault().Code);
+                parameters.Add("TimeSheetMaster", CommonFunctions.MapModelToProcedureTypeDataTable(TimeSheetMaster.TimeSheetMaster, TY_STRUCTUREArry[0]).AsTableValuedParameter());
+                parameters.Add("TimeSheetDetail", CommonFunctions.MapModelToProcedureTypeDataTable(TimeSheetMaster.TimeSheetDetail, TY_STRUCTUREArry[1]).AsTableValuedParameter());
 
-                // Prepare DataTable for TVP
-                DataTable timeSheetTable = new DataTable();
-                timeSheetTable.Columns.Add("ClientName", typeof(string));
-                timeSheetTable.Columns.Add("FromHr", typeof(string));
-                timeSheetTable.Columns.Add("ToHr", typeof(string));
-                timeSheetTable.Columns.Add("TimeInMinutes", typeof(int));
-                timeSheetTable.Columns.Add("WorkType", typeof(string));
-                timeSheetTable.Columns.Add("Remarks1", typeof(string));
-
-                foreach (var detail in viewModel.TimeSheetDetail)
-                {
-                    timeSheetTable.Rows.Add(
-                        detail.ClientName,
-                        detail.FromHr,
-                        detail.ToHr,
-                        detail.TimeinMinutes,
-                        detail.WorkType,
-                        detail.Remarks1
-                    );
-                }
-                parameters.Add("TimeSheet", timeSheetTable.AsTableValuedParameter("TY_TimeSheetDetail"));
                 var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
+
                 return result.ToList();
             }
         }
-        public async Task<dynamic> Delete(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code)
+
+        public async Task<dynamic> Delete(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code,int TimeSheetDetail_Code)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Mode", "DELETE");
                 parameters.Add("Code", Code);
+                parameters.Add("TimeSheetDetail_Code", TimeSheetDetail_Code);
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
+
+        public async Task<dynamic> TimeSheetRemark(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code, string Remark)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "R_Update");
+                parameters.Add("Code", Code);
+                parameters.Add("Remarks", Remark);
                 var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
 
                 return result.ToList();
