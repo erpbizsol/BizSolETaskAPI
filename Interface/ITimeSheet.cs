@@ -10,5 +10,6 @@ namespace BizsolETask_Api.Interface
         public abstract Task<dynamic> SaveTimeSheetMaster(BizsolETaskConnectionString BizsolETaskConnectionString, Vw_TimeSheet viewModel);
         public abstract Task<dynamic> Delete(BizsolETaskConnectionString BizsolETaskConnectionString, int Code,int TimeSheetDetail_Code);
         public abstract Task<dynamic> TimeSheetRemark(BizsolETaskConnectionString BizsolETaskConnectionString, int Code, string Remark);
+        public abstract Task<IEnumerable<dynamic>> GetClientNameList(BizsolETaskConnectionString BizsolETaskConnectionString);
     }
 }

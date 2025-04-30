@@ -93,7 +93,17 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetClientNameList(BizsolETaskConnectionString bizsolESMSConnectionDetails)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "CLIENTTYPE");
+                var result = await conn.QueryAsync<dynamic>("USP_DropDown", parameters, commandType: CommandType.StoredProcedure);
 
+                return result.ToList();
+            }
+        }
     }
 }
 
