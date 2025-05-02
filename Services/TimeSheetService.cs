@@ -104,6 +104,18 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetDate(BizsolETaskConnectionString bizsolESMSConnectionDetails,int EmployeeName)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "GETDATE");
+                parameters.Add("EmployeeName", EmployeeName);
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetMasterNew", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
     }
 }
 
