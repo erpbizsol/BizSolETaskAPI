@@ -970,6 +970,51 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("GetGenerateTaskTicketDate")]
+        public async Task<IActionResult> GetGenerateTaskTicketDate(string EmployeeName, string showBy, string Status, string ticketNo)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetGenerateTaskTicketDate(_bizsolESMSConnectionDetails, EmployeeName, showBy, Status, ticketNo);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetGenerateTaskTicketByCode")]
+        public async Task<IActionResult> GetGenerateTaskTicketByCode(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetGenerateTaskTicketByCode(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion GenerateTask
 
     }

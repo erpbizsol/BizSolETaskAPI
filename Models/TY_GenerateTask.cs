@@ -6,7 +6,7 @@ namespace BizsolETask_Api.Models
     public class TY_GenerateTask
     {
         public int Code { get; set; }
-        public string? UID { get; set; }
+        public int TicketNo { get; set; } = 0;
         public int EmployeeMaster_Code { get; set; }
         public string? LogDate { get; set; } 
         public int ClientMaster_Code { get; set; }
