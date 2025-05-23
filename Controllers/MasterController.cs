@@ -17,7 +17,8 @@ namespace BizsolETask_Api.Controllers
         private readonly IEmployeeRatePerHourDetails _EmployeeRatePerHourDetails;
         private readonly ITimeSheet _ITimeSheet;
         private readonly IGenerateTask _IGenerateTask;
-        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask)
+        private readonly IPendingTask _IPendingTask;
+        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask,IPendingTask pendingTask)
         {
             _UserModuleMaster = IUserModuleMaster;
             _EmployeeMasterMaster = employeeMasterMaster;
@@ -27,6 +28,7 @@ namespace BizsolETask_Api.Controllers
             _ClientMaster = clientMaster;
             _ITimeSheet = iTimeSheet;
             _IGenerateTask = iGenerateTask;
+            _IPendingTask= pendingTask;
         }
 
         #region EmployeeMaster
@@ -993,6 +995,7 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
         [HttpGet]
         [Route("GetGenerateTaskTicketByCode")]
         public async Task<IActionResult> GetGenerateTaskTicketByCode(int Code)
@@ -1015,7 +1018,101 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetAttachment")]
+        public async Task<IActionResult> GetAttachment(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetAttachment(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("GetTicketsDetails")]
+        public async Task<IActionResult> GetTicketsDetails(int TicketNo)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetTicketsDetails(_bizsolESMSConnectionDetails, TicketNo);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion GenerateTask
+
+        #region PendingTask
+        [HttpGet]
+        [Route("GetStatuss")]
+        public async Task<IActionResult> GetStatuss()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IPendingTask.GetStatuss(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("GetStatusType")]
+        public async Task<IActionResult> GetStatusType(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IPendingTask.GetStatusType(_bizsolESMSConnectionDetails,Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion PendingTask
 
     }
 }

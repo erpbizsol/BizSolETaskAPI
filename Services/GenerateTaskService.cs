@@ -80,7 +80,7 @@ namespace BizsolETask_Api.Services
                 DynamicParameters parameters = new DynamicParameters();
 
                 parameters.Add("Mode", "SAVEDATA");
-                parameters.Add("CallTicketMaster_Code", GenerateTaskMaster.GenerateTask.FirstOrDefault().Code);
+                parameters.Add("Code", GenerateTaskMaster.GenerateTask.FirstOrDefault().Code);
                 parameters.Add("GenerateTask", CommonFunctions.MapModelToProcedureTypeDataTable(GenerateTaskMaster.GenerateTask, TY_STRUCTUREArry[0]).AsTableValuedParameter());
                 parameters.Add("Attachments", CommonFunctions.MapModelToProcedureTypeDataTable(GenerateTaskMaster.Attachment, TY_STRUCTUREArry[1]).AsTableValuedParameter());
 
@@ -119,9 +119,30 @@ namespace BizsolETask_Api.Services
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Mode", "SHOWDATA");
-                parameters.Add("CallTicketMaster_Code", Code);
+                parameters.Add("Code", Code);
                 var result = await conn.QueryAsync<dynamic>("USP_InsertProject_Master_New", parameters, commandType: CommandType.StoredProcedure);
 
+                return result.ToList();
+            }
+        }
+        public async Task<dynamic> GetAttachment(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "GETA");
+                parameters.Add("Code", Code);
+                var result = await conn.QueryAsync<dynamic>("USP_InsertProject_Master_New", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
+        public async Task<dynamic> GetTicketsDetails(BizsolETaskConnectionString bizsolESMSConnectionDetails, int TicketNo)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("TicketNo", TicketNo);
+                var result = await conn.QueryAsync<dynamic>("USP_CallTicketsDetails_Ticket_New", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
             }
         }
