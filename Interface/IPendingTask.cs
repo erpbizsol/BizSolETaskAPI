@@ -6,5 +6,6 @@ namespace BizsolETask_Api.Interface
     {
         public abstract Task<IEnumerable<dynamic>> GetStatuss(BizsolETaskConnectionString BizsolETaskConnectionString);
         public abstract Task<IEnumerable<dynamic>> GetStatusType(BizsolETaskConnectionString BizsolETaskConnectionString,int Code);
+        public abstract Task<dynamic> SavePendingTask(BizsolETaskConnectionString BizsolETaskConnectionString, Vw_PendingTask PendingTask);
     }
 }
