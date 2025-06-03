@@ -1135,6 +1135,30 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("GetPendingTaskReport")]
+        public async Task<IActionResult> GetPendingTaskReport(int Code,string Status)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IPendingTask.GetPendingTaskReport(_bizsolESMSConnectionDetails, Code,Status);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         #endregion PendingTask
 
     }

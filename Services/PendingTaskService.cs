@@ -49,5 +49,17 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetPendingTaskReport(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code,string Status)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("EmployeeCode", Code);
+                parameters.Add("StatusTask", Status);
+                var result = await conn.QueryAsync<dynamic>("USP_PendingTaskUserWise_new", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
     }
 }
