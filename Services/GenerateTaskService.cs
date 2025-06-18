@@ -146,5 +146,15 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<dynamic> GetWorksTimes(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Code", Code);
+                var result = await conn.QueryAsync<dynamic>("USP_GetWorksTimes", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
     }
 }

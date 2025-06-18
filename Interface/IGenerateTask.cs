@@ -15,5 +15,6 @@ namespace BizsolETask_Api.Interface
         public abstract Task<dynamic> GetGenerateTaskTicketByCode(BizsolETaskConnectionString BizsolETaskConnectionString, int Code);
         public abstract Task<dynamic> GetAttachment(BizsolETaskConnectionString BizsolETaskConnectionString, int Code);
         public abstract Task<dynamic> GetTicketsDetails(BizsolETaskConnectionString BizsolETaskConnectionString, int TicketNo);
+        public abstract Task<dynamic> GetWorksTimes(BizsolETaskConnectionString BizsolETaskConnectionString, int Code);
     }
 }
