@@ -81,6 +81,7 @@ namespace BizsolETask_Api.Services
 
                 parameters.Add("Mode", "SAVEDATA");
                 parameters.Add("Code", GenerateTaskMaster.GenerateTask.FirstOrDefault().Code);
+                parameters.Add("UserMaster_Code", GenerateTaskMaster.GenerateTask.FirstOrDefault().UserMaster_Code);
                 parameters.Add("GenerateTask", CommonFunctions.MapModelToProcedureTypeDataTable(GenerateTaskMaster.GenerateTask, TY_STRUCTUREArry[0]).AsTableValuedParameter());
                 parameters.Add("Attachments", CommonFunctions.MapModelToProcedureTypeDataTable(GenerateTaskMaster.Attachment, TY_STRUCTUREArry[1]).AsTableValuedParameter());
 
@@ -153,6 +154,18 @@ namespace BizsolETask_Api.Services
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Code", Code);
                 var result = await conn.QueryAsync<dynamic>("USP_GetWorksTimes", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
+        public async Task<dynamic> DeleteGenerateTask(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "DELETE");
+                parameters.Add("Code", Code);
+                var result = await conn.QueryAsync<dynamic>("USP_InsertProject_Master_New", parameters, commandType: CommandType.StoredProcedure);
+
                 return result.ToList();
             }
         }
