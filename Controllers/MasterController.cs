@@ -929,14 +929,14 @@ namespace BizsolETask_Api.Controllers
 
         [HttpGet]
         [Route("GetAssigneds")]
-        public async Task<IActionResult> GetAssigneds()
+        public async Task<IActionResult> GetAssigneds(int code)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _IGenerateTask.GetAssigneds(_bizsolESMSConnectionDetails);
+                    var result = await _IGenerateTask.GetAssigneds(_bizsolESMSConnectionDetails,code);
                     return Ok(result);
                 }
                 else
@@ -1204,6 +1204,7 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
+        
         #endregion PendingTask
 
     }
