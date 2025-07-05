@@ -972,6 +972,28 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAssignedss")]
+        public async Task<IActionResult> GetAssignedss()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetAssignedss(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         [HttpPost]
         [Route("SaveGenerateTaskTicket")]
         public async Task<IActionResult> SaveGenerateTaskTicket([FromBody] Vw_GenrateTask viewModel)

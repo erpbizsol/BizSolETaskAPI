@@ -70,6 +70,16 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetAssignedss(BizsolETaskConnectionString bizsolESMSConnectionDetails)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                var result = await conn.QueryAsync<dynamic>("USP_ClientWiseEmpolyee_Detail", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
         public async Task<dynamic> SaveGenerateTaskTicket(BizsolETaskConnectionString bizsolESMSConnectionDetails, Vw_GenrateTask GenerateTaskMaster)
         {
 
