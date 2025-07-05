@@ -622,6 +622,28 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("AssignClientsToEmployee")]
+        public async Task<IActionResult> AssignClientsToEmployee([FromBody] IEnumerable<TY_AssignClient>  AssignClient)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ClientMaster.AssignClientsToEmployee(_bizsolESMSConnectionDetails, AssignClient);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion ClientMaster
 
         #region TimeSheet
@@ -1109,6 +1131,74 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetEmployeeWiseClient")]
+        public async Task<IActionResult> GetEmployeeWiseClient(string Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetEmployeeWiseClient(_bizsolESMSConnectionDetails,Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("DateWiseUserWiseTime")]
+        public async Task<IActionResult> DateWiseUserWiseTime(int TickatNo)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.DateWiseUserWiseTime(_bizsolESMSConnectionDetails, TickatNo);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("GetGenerateTaskTicketDatePending")]
+        public async Task<IActionResult> GetGenerateTaskTicketDatePending(string EmployeeName, string Status, string ticketNo)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetGenerateTaskTicketDatePending(_bizsolESMSConnectionDetails, EmployeeName, Status, ticketNo);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion GenerateTask
 
         #region PendingTask
@@ -1206,6 +1296,7 @@ namespace BizsolETask_Api.Controllers
 
         
         #endregion PendingTask
+
 
     }
 }

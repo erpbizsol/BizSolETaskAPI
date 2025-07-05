@@ -11,5 +11,6 @@
         public string? EmployeeType { get; set; } = "";
         public string? Status { get; set; } = "";
         public int UserMaster_Code { get; set; } 
+        public int Numberofdays { get; set; } 
     }
 }

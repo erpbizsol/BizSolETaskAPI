@@ -115,6 +115,30 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetGenerateTaskTicketDatePending(BizsolETaskConnectionString bizsolESMSConnectionDetails, string? EmployeeName, string? Status, string ticketNo)
+        {
+
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                //parameters.Add("Mode", "GETDATE");
+                //if (showBy == "undefined" || showBy == "UsWise")
+                //{
+                    parameters.Add("EmployeeName", EmployeeName);
+                    if (Status != "A")
+                        parameters.Add("StatusName", Status);
+               // }
+               // else
+                //{
+                    if (Status != "A")
+                        parameters.Add("StatusName", Status);
+                //}
+                parameters.Add("TicketNo", ticketNo);
+
+                var result = await conn.QueryAsync<dynamic>("USP_InsertProject_Master_New_test", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
         public async Task<dynamic> GetGenerateTaskTicketByCode(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
@@ -170,5 +194,28 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetEmployeeWiseClient(BizsolETaskConnectionString bizsolESMSConnectionDetails,string Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Code", Code);
+                var result = await conn.QueryAsync<dynamic>("USP_EmpWiseClientList", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
+        public async Task<IEnumerable<dynamic>> DateWiseUserWiseTime(BizsolETaskConnectionString bizsolESMSConnectionDetails, int TickatNo)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("TickatNo", TickatNo);
+                var result = await conn.QueryAsync<dynamic>("DateWiseUserWiseTime", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
     }
+
 }

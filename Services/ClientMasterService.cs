@@ -3,6 +3,7 @@ using Dapper;
 using System.Data.SqlClient;
 using System.Data;
 using BizsolETask_Api.Interface;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace BizsolETask_Api.Services
 {
@@ -80,6 +81,19 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<dynamic> AssignClientsToEmployee(BizsolETaskConnectionString bizsolESMSConnectionDetails, IEnumerable<TY_AssignClient>  AssignClient)
+        {
+            var TY_STRUCTUREArry = CommonFunctions.DataTableArrayExecuteSqlQueryWithParameter(bizsolESMSConnectionDetails.ConnectionSql, $"exec [dbo].[USP_AssignClientsToEmployee] @Mode='TABLE_STRUCTURE'", null);
+            using (IDbConnection conn = new
+            SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "SAVE");
+                parameters.Add("AssignClients", CommonFunctions.MapModelToProcedureTypeDataTable(AssignClient, TY_STRUCTUREArry[0]).AsTableValuedParameter());
+                var result = await conn.QueryAsync<dynamic>("USP_AssignClientsToEmployee", parameters, commandType: CommandType.StoredProcedure);
 
+                return result.ToList();
+            }
+        }
     }
 }
