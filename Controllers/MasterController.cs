@@ -1201,14 +1201,14 @@ namespace BizsolETask_Api.Controllers
         }
         [HttpPost]
         [Route("GetGenerateTaskTicketDatePending")]
-        public async Task<IActionResult> GetGenerateTaskTicketDatePending(string EmployeeName, string Status, string ticketNo)
+        public async Task<IActionResult> GetGenerateTaskTicketDatePending(string EmployeeName, string Status, string ticketNo, string ReportType, string? FromDate, string? ToDate)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _IGenerateTask.GetGenerateTaskTicketDatePending(_bizsolESMSConnectionDetails, EmployeeName, Status, ticketNo);
+                    var result = await _IGenerateTask.GetGenerateTaskTicketDatePending(_bizsolESMSConnectionDetails, EmployeeName, Status, ticketNo,ReportType,FromDate,ToDate);
                     return Ok(result);
                 }
                 else

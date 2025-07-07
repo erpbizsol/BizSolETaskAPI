@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Data;
 using BizsolETask_Api.Interface;
 using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BizsolETask_Api.Services
 {
@@ -125,25 +126,19 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
-        public async Task<IEnumerable<dynamic>> GetGenerateTaskTicketDatePending(BizsolETaskConnectionString bizsolESMSConnectionDetails, string? EmployeeName, string? Status, string ticketNo)
+        public async Task<IEnumerable<dynamic>> GetGenerateTaskTicketDatePending(BizsolETaskConnectionString bizsolESMSConnectionDetails, string? EmployeeName, string? Status, string ticketNo,string ReportType, string? FromDate, string? ToDate)
         {
 
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
                 DynamicParameters parameters = new DynamicParameters();
-                //parameters.Add("Mode", "GETDATE");
-                //if (showBy == "undefined" || showBy == "UsWise")
-                //{
-                    parameters.Add("EmployeeName", EmployeeName);
-                    if (Status != "A")
-                        parameters.Add("StatusName", Status);
-               // }
-               // else
-                //{
-                    if (Status != "A")
-                        parameters.Add("StatusName", Status);
-                //}
-                parameters.Add("TicketNo", ticketNo);
+            
+            parameters.Add("EmployeeName", EmployeeName);
+            parameters.Add("StatusName", Status);
+            parameters.Add("TicketNo", ticketNo);
+            parameters.Add("ReportType", ReportType);
+            parameters.Add("FromDate", FromDate);
+            parameters.Add("ToDate", ToDate);
 
                 var result = await conn.QueryAsync<dynamic>("USP_InsertProject_Master_New_test", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
