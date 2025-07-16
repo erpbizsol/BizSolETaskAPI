@@ -28,6 +28,8 @@ builder.Services.AddTransient<ITimeSheet, TimeSheetService>();
 builder.Services.AddTransient<IReport, ReportServices>();
 builder.Services.AddTransient<IGenerateTask, GenerateTaskService>();
 builder.Services.AddTransient<IPendingTask, PendingTaskService>();
+builder.Services.AddTransient<IEmail,EmailService>();
+builder.Services.AddTransient<IEmployeeAttandance,EmployeeAttandanceService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

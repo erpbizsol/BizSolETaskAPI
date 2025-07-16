@@ -86,6 +86,7 @@ namespace BizsolETask_Api.Services
                 parameters.Add("MobileNo", EmployeeMaster.MobileNo);
                 parameters.Add("Password", password);
                 parameters.Add("Numberofdays", EmployeeMaster.Numberofdays);
+                parameters.Add("WorkingHours", EmployeeMaster.WorkingHours);
                 var result = await conn.QueryAsync<dynamic>("USP_EmployeeMaster", parameters, commandType: CommandType.StoredProcedure);
 
                 return result.ToList();

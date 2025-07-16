@@ -4,7 +4,7 @@
     {
         public int Code { get; set; }
         public int Status { get; set; }
-        public string TotalResolutionM { get; set; }
+        public int ResolutionTime { get; set; }
         public string ResolutiondDate { get; set; }
         public int ReAssign { get; set; } = 0;
         public int ResolvedBy { get; set; } = 0;

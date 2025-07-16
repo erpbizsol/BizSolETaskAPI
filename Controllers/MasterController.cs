@@ -18,7 +18,8 @@ namespace BizsolETask_Api.Controllers
         private readonly ITimeSheet _ITimeSheet;
         private readonly IGenerateTask _IGenerateTask;
         private readonly IPendingTask _IPendingTask;
-        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask,IPendingTask pendingTask)
+        private readonly IEmployeeAttandance _IEmployeeAttandance;
+        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask,IPendingTask pendingTask,IEmployeeAttandance employeeAttandance)
         {
             _UserModuleMaster = IUserModuleMaster;
             _EmployeeMasterMaster = employeeMasterMaster;
@@ -29,6 +30,7 @@ namespace BizsolETask_Api.Controllers
             _ITimeSheet = iTimeSheet;
             _IGenerateTask = iGenerateTask;
             _IPendingTask= pendingTask;
+            _IEmployeeAttandance = employeeAttandance;
         }
 
         #region EmployeeMaster
@@ -1201,7 +1203,7 @@ namespace BizsolETask_Api.Controllers
         }
         [HttpPost]
         [Route("GetGenerateTaskTicketDatePending")]
-        public async Task<IActionResult> GetGenerateTaskTicketDatePending(string EmployeeName, string Status, string ticketNo, string ReportType, string? FromDate, string? ToDate)
+        public async Task<IActionResult> GetGenerateTaskTicketDatePending(string? EmployeeName, string Status, string ticketNo, string ReportType, string? FromDate, string? ToDate)
         {
             try
             {
@@ -1316,9 +1318,126 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
-        
+
         #endregion PendingTask
 
+        #region  EmployeeAttandance
+
+        [HttpGet]
+        [Route("GetEmployeeIdCard")]
+        public async Task<IActionResult> GetEmployeeIdCard()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IEmployeeAttandance.GetEmployeeIdCard(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetCardwiseEmployeeName")]
+        public async Task<IActionResult> GetCardwiseEmployeeName(string CardCode)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IEmployeeAttandance.GetCardwiseEmployeeName(_bizsolESMSConnectionDetails, CardCode);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("GetEmployeeAttandance")]
+        public async Task<IActionResult> GetEmployeeAttandance(string EmployeeCode, string Date)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IEmployeeAttandance.GetEmployeeAttandance(_bizsolESMSConnectionDetails, EmployeeCode, Date);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveEmployeeAttandance")]
+        public async Task<IActionResult> SaveEmployeeAttandance([FromBody] TY_EmployeeAttandance EmployeeAttandance)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IEmployeeAttandance.SaveEmployeeAttandance(_bizsolESMSConnectionDetails, EmployeeAttandance);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveEmployeeStatus")]
+        public async Task<IActionResult> SaveEmployeeStatus(string? EmployeeCode, string? Date, string? Status, int UserMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IEmployeeAttandance.SaveEmployeeStatus(_bizsolESMSConnectionDetails,EmployeeCode, Date, Status,UserMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion EmployeeAttandance
 
     }
 }
