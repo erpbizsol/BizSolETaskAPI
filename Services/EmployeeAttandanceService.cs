@@ -50,7 +50,7 @@ namespace BizsolETask_Api.Services
                 DynamicParameters parameters = new DynamicParameters();
 
                 parameters.Add("Mode", "SAVEDATA");
-                parameters.Add("EmployeeCode", EmployeeAttandance.EmployeeMaster_Code);
+                parameters.Add("EmployeeMaster_Code", EmployeeAttandance.EmployeeMaster_Code);
                 parameters.Add("WorkingHours", EmployeeAttandance.WorkingHours);
                 parameters.Add("Statuss", EmployeeAttandance.Status);
                 parameters.Add("Date", EmployeeAttandance.Date);
