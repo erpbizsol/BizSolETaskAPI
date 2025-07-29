@@ -8,71 +8,57 @@ namespace BizsolETask_Api.Services
 {
     public class DashboardService: IDashboard
     {
-        public async Task<dynamic> GetClientType(BizsolETaskConnectionString bizsolESMSConnectionDetails, string FromDate, string ToDate)
+        public async Task<dynamic> GetEmployeeType(BizsolETaskConnectionString bizsolESMSConnectionDetails, string Mode, string FromDate, string ToDate,int UserMaster_Code, string? EmployeeMaster_Code)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("ReportType", "ClientType");
-                parameters.Add("FromDate", FromDate);
-                parameters.Add("ToDate", ToDate);
-
-                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetReportNew_Dashbord", parameters, commandType: CommandType.StoredProcedure);
-
-                return result.ToList();
-            }
-        }
-        public async Task<dynamic> GetWorkType(BizsolETaskConnectionString bizsolESMSConnectionDetails, string FromDate, string ToDate)
-        {
-            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
-            {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("ReportType", "WorkType");
-                parameters.Add("FromDate", FromDate);
-                parameters.Add("ToDate", ToDate);
-
-                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetReportNew_Dashbord", parameters, commandType: CommandType.StoredProcedure);
-
-                return result.ToList();
-            }
-        }
-        public async Task<dynamic> GetEmployeeType(BizsolETaskConnectionString bizsolESMSConnectionDetails, string FromDate, string ToDate)
-        {
-            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
-            {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("ReportType", "EmployeeType");
-                parameters.Add("FromDate", FromDate);
-                parameters.Add("ToDate", ToDate);
-
-                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetReportNew_Dashbord", parameters, commandType: CommandType.StoredProcedure);
-
-                return result.ToList();
-            }
-        }
-        public async Task<dynamic> GetEmployeeHours(BizsolETaskConnectionString bizsolESMSConnectionDetails)
-        {
-            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
-            {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("ReportType", "GETHOUR");
-                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetReportNew_Dashbord", parameters, commandType: CommandType.StoredProcedure);
-                return result.ToList();
-            }
-        }
-        public async Task<dynamic> GetEmployeeWiseStatus(BizsolETaskConnectionString bizsolESMSConnectionDetails, string FromDate, string ToDate, int UserMaster_Code)
-        {
-            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
-            {
-                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", Mode.Trim());
+                parameters.Add("ReportType", "EMPLOYEETYPE");
                 parameters.Add("FromDate", FromDate);
                 parameters.Add("ToDate", ToDate);
                 parameters.Add("UserMaster_Code", UserMaster_Code);
-                var result = await conn.QueryAsync<dynamic>("USP_GetEmployeeWiseStatus", parameters, commandType: CommandType.StoredProcedure);
+                parameters.Add("EmployeeMaster_Code", EmployeeMaster_Code);
+
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetReportNew_Dashbord_test", parameters, commandType: CommandType.StoredProcedure);
+
                 return result.ToList();
             }
         }
-      
+        public async Task<dynamic> GetEmployeePending(BizsolETaskConnectionString bizsolESMSConnectionDetails, string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("ReportType", "STATUSP");
+                parameters.Add("Mode", Mode.Trim());
+                parameters.Add("FromDate", FromDate);
+                parameters.Add("ToDate", ToDate);
+                parameters.Add("UserMaster_Code", UserMaster_Code);
+                parameters.Add("EmployeeMaster_Code",EmployeeMaster_Code);
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetReportNew_Dashbord_test", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
+
+        public async Task<dynamic> GetClientPending(BizsolETaskConnectionString bizsolESMSConnectionDetails, string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("ReportType", "CLIENTSTATUS");
+                parameters.Add("Mode", Mode.Trim());
+                parameters.Add("FromDate", FromDate);
+                parameters.Add("ToDate", ToDate);
+                parameters.Add("UserMaster_Code", UserMaster_Code);
+                parameters.Add("EmployeeMaster_Code", EmployeeMaster_Code);
+
+                var result = await conn.QueryAsync<dynamic>("USP_TimeSheetReportNew_Dashbord_test", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
 
     }
 }

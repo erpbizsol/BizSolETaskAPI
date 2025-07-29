@@ -14,61 +14,40 @@ namespace BizsolETask_Api.Controllers
             _IDashboard = IDashboard;
 
         }
-
-        [HttpGet]
-        [Route("GetClientType")]
-        public async Task<IActionResult> GetClientType(string FromDate, string ToDate)
-        {
-            try
-            {
-                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
-                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
-                {
-                    var result = await _IDashboard.GetClientType(_bizsolESMSConnectionDetails, FromDate, ToDate);
-                    return Ok(result);
-                }
-                else
-                {
-                    return StatusCode(500, "Error To Fetch Connection String");
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-        [HttpGet]
-        [Route("GetWorkType")]
-        public async Task<IActionResult> GetWorkType(string FromDate, string ToDate)
-        {
-            try
-            {
-                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
-                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
-                {
-                    var result = await _IDashboard.GetWorkType(_bizsolESMSConnectionDetails, FromDate, ToDate);
-                    return Ok(result);
-                }
-                else
-                {
-                    return StatusCode(500, "Error To Fetch Connection String");
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
+      
         [HttpGet]
         [Route("GetEmployeeType")]
-        public async Task<IActionResult> GetEmployeeType(string FromDate, string ToDate)
+        public async Task<IActionResult> GetEmployeeType(string Mode,string FromDate, string ToDate,int UserMaster_Code, string? EmployeeMaster_Code)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _IDashboard.GetEmployeeType(_bizsolESMSConnectionDetails, FromDate, ToDate);
+                    var result = await _IDashboard.GetEmployeeType(_bizsolESMSConnectionDetails, Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+     
+        [HttpGet]
+        [Route("GetEmployeePending")]
+        public async Task<IActionResult> GetEmployeePending(string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IDashboard.GetEmployeePending(_bizsolESMSConnectionDetails,Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
                     return Ok(result);
                 }
                 else
@@ -82,37 +61,15 @@ namespace BizsolETask_Api.Controllers
             }
         }
         [HttpGet]
-        [Route("GetEmployeeHours")]
-        public async Task<IActionResult> GetEmployeeHours()
+        [Route("GetClientPending")]
+        public async Task<IActionResult> GetClientPending(string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _IDashboard.GetEmployeeHours(_bizsolESMSConnectionDetails);
-                    return Ok(result);
-                }
-                else
-                {
-                    return StatusCode(500, "Error To Fetch Connection String");
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-        [HttpGet]
-        [Route("GetEmployeeWiseStatus")]
-        public async Task<IActionResult> GetEmployeeWiseStatus(string FromDate, string ToDate,int UserMaster_Code)
-        {
-            try
-            {
-                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
-                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
-                {
-                    var result = await _IDashboard.GetEmployeeWiseStatus(_bizsolESMSConnectionDetails, FromDate, ToDate, UserMaster_Code);
+                    var result = await _IDashboard.GetClientPending(_bizsolESMSConnectionDetails, Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
                     return Ok(result);
                 }
                 else
@@ -126,6 +83,5 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
-       
     }
 }

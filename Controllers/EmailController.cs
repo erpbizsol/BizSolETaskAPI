@@ -16,14 +16,14 @@ namespace BizsolETask_Api.Controllers
        
         [HttpGet]
         [Route("SenEmailMassage")]
-        public async Task<IActionResult> SenEmailMassage(int Code)
+        public async Task<IActionResult> SenEmailMassage(int Code,string Mode)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _IEmail.SenEmailMassage(_bizsolESMSConnectionDetails, Code);
+                    var result = await _IEmail.SenEmailMassage(_bizsolESMSConnectionDetails, Code, Mode);
                     return Ok(result);
                 }
                 else

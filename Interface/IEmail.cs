@@ -4,7 +4,7 @@ namespace BizsolETask_Api.Interface
 {
     public interface IEmail
     {
-        public abstract Task<IEnumerable<dynamic>> SenEmailMassage(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code);
+        public abstract Task<IEnumerable<dynamic>> SenEmailMassage(BizsolETaskConnectionString bizsolESMSConnectionDetails, int Code, string Mode);
 
     }
 }

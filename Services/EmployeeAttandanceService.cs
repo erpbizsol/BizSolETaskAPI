@@ -52,6 +52,7 @@ namespace BizsolETask_Api.Services
                 parameters.Add("Mode", "SAVEDATA");
                 parameters.Add("EmployeeMaster_Code", EmployeeAttandance.EmployeeMaster_Code);
                 parameters.Add("WorkingHours", EmployeeAttandance.WorkingHours);
+                parameters.Add("RemainingHours", EmployeeAttandance.RemainingHours);
                 parameters.Add("Statuss", EmployeeAttandance.Status);
                 parameters.Add("Date", EmployeeAttandance.Date);
                 parameters.Add("UserMaster_Code", EmployeeAttandance.UserMaster_Code);

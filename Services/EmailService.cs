@@ -8,14 +8,14 @@ namespace BizsolETask_Api.Services
 {
     public class EmailService:IEmail
     {
-        public async Task<IEnumerable<dynamic>> SenEmailMassage(BizsolETaskConnectionString bizsolESMSConnectionDetails,int Code)
+        public async Task<IEnumerable<dynamic>> SenEmailMassage(BizsolETaskConnectionString bizsolESMSConnectionDetails,int Code,string Mode)
         {
 
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("Code", Code);
-                parameters.Add("Mode", "NEW");
+                parameters.Add("Mode", Mode);
                 var result = await conn.QueryAsync<dynamic>("USP_SendEmail", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
             }
