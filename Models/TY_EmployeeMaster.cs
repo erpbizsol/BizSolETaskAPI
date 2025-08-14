@@ -12,6 +12,6 @@
         public string? Status { get; set; } = "";
         public int UserMaster_Code { get; set; } 
         public int Numberofdays { get; set; } 
-        public int WorkingHours { get; set; } 
+        public decimal WorkingHours { get; set; } 
     }
 }

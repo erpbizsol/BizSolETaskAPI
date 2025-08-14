@@ -83,7 +83,6 @@ namespace BizsolETask_Api.Services
         }
         public async Task<dynamic> SaveGenerateTaskTicket(BizsolETaskConnectionString bizsolESMSConnectionDetails, Vw_GenrateTask GenerateTaskMaster)
         {
-
             var TY_STRUCTUREArry = CommonFunctions.DataTableArrayExecuteSqlQueryWithParameter(bizsolESMSConnectionDetails.ConnectionSql, $"exec [dbo].[USP_InsertProject_Master_New] @Mode='TABLE_STRUCTURE'", null);
 
             using (IDbConnection conn = new
