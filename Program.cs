@@ -31,6 +31,7 @@ builder.Services.AddTransient<IPendingTask, PendingTaskService>();
 builder.Services.AddTransient<IEmail,EmailService>();
 builder.Services.AddTransient<IEmployeeAttandance,EmployeeAttandanceService>();
 builder.Services.AddTransient<IDashboard,DashboardService>();
+builder.Services.AddTransient<ITicketsRatingPending,TicketsRatingPendingService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -19,8 +19,11 @@ namespace BizsolETask_Api.Controllers
         private readonly IGenerateTask _IGenerateTask;
         private readonly IPendingTask _IPendingTask;
         private readonly IEmployeeAttandance _IEmployeeAttandance;
-        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask,IPendingTask pendingTask,IEmployeeAttandance employeeAttandance)
+        private readonly ITicketsRatingPending _ITicketsRatingPending;
+        public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask
+        ,IPendingTask pendingTask,IEmployeeAttandance employeeAttandance, ITicketsRatingPending _iTicketsRatingPending)
         {
+           
             _UserModuleMaster = IUserModuleMaster;
             _EmployeeMasterMaster = employeeMasterMaster;
             _StatusMaster = statusMaster;
@@ -31,6 +34,7 @@ namespace BizsolETask_Api.Controllers
             _IGenerateTask = iGenerateTask;
             _IPendingTask= pendingTask;
             _IEmployeeAttandance = employeeAttandance;
+            _ITicketsRatingPending = _iTicketsRatingPending;
         }
 
         #region EmployeeMaster
@@ -1438,6 +1442,98 @@ namespace BizsolETask_Api.Controllers
             }
         }
         #endregion EmployeeAttandance
+
+        #region TicketsRatingPending
+        [HttpGet]
+        [Route("GetTicketsRatingPending")]
+        public async Task<IActionResult> GetTicketsRatingPending()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITicketsRatingPending.GetTicketsRatingPending(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("SaveTicketsRating")]
+        public async Task<IActionResult> SaveTicketsRating(int CallTicketMaster_Code, int Star, string Remark, int UserMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITicketsRatingPending.SaveTicketsRating(_bizsolESMSConnectionDetails,CallTicketMaster_Code,Star,Remark, UserMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetTicketsRatingByCode")]
+        public async Task<IActionResult> GetTicketsRatingByCode(int CallTicketMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITicketsRatingPending.GetTicketsRatingByCode(_bizsolESMSConnectionDetails, CallTicketMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("TICKETSRATING")]
+        public async Task<IActionResult> TICKETSRATING(int UserMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITicketsRatingPending.TICKETSRATING(_bizsolESMSConnectionDetails, UserMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion TicketsRatingPending
 
     }
 }
