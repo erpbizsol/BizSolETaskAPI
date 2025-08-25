@@ -8,11 +8,12 @@ namespace BizsolETask_Api.Services
 {
     public class TicketsRatingPendingService: ITicketsRatingPending
     {
-        public async Task<IEnumerable<dynamic>> GetTicketsRatingPending(BizsolETaskConnectionString bizsolESMSConnectionDetails)
+        public async Task<IEnumerable<dynamic>> GetTicketsRatingPending(BizsolETaskConnectionString bizsolESMSConnectionDetails,string? ReportType)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
                 DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("ReportType", ReportType);
                 var result = await conn.QueryAsync<dynamic>("USP_GetTicketsRatingPending", parameters, commandType: CommandType.StoredProcedure);
 
                 return result.ToList();

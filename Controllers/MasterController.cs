@@ -1446,14 +1446,14 @@ namespace BizsolETask_Api.Controllers
         #region TicketsRatingPending
         [HttpGet]
         [Route("GetTicketsRatingPending")]
-        public async Task<IActionResult> GetTicketsRatingPending()
+        public async Task<IActionResult> GetTicketsRatingPending(string ReportType)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _ITicketsRatingPending.GetTicketsRatingPending(_bizsolESMSConnectionDetails);
+                    var result = await _ITicketsRatingPending.GetTicketsRatingPending(_bizsolESMSConnectionDetails, ReportType);
                     return Ok(result);
                 }
                 else
