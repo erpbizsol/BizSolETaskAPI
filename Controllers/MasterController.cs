@@ -1,5 +1,6 @@
 ﻿using BizsolETask_Api.Interface;
 using BizsolETask_Api.Models;
+using BizsolETask_Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -1446,14 +1447,14 @@ namespace BizsolETask_Api.Controllers
         #region TicketsRatingPending
         [HttpGet]
         [Route("GetTicketsRatingPending")]
-        public async Task<IActionResult> GetTicketsRatingPending(string ReportType)
+        public async Task<IActionResult> GetTicketsRatingPending(string ReportType, string? FromDate, string? ToDate)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _ITicketsRatingPending.GetTicketsRatingPending(_bizsolESMSConnectionDetails, ReportType);
+                    var result = await _ITicketsRatingPending.GetTicketsRatingPending(_bizsolESMSConnectionDetails, ReportType, FromDate,ToDate);
                     return Ok(result);
                 }
                 else
@@ -1467,16 +1468,16 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("SaveTicketsRating")]
-        public async Task<IActionResult> SaveTicketsRating(int CallTicketMaster_Code, int Star, string Remark, int UserMaster_Code)
+        public async Task<IActionResult> SaveTicketsRating(TicketsRating ticketsRating)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _ITicketsRatingPending.SaveTicketsRating(_bizsolESMSConnectionDetails,CallTicketMaster_Code,Star,Remark, UserMaster_Code);
+                    var result = await _ITicketsRatingPending.SaveTicketsRating(_bizsolESMSConnectionDetails, ticketsRating);
                     return Ok(result);
                 }
                 else
@@ -1533,6 +1534,8 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+     
         #endregion TicketsRatingPending
 
     }
