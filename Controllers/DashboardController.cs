@@ -83,5 +83,115 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetNormalPriority")]
+        public async Task<IActionResult> GetNormalPriority(string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IDashboard.GetNormalPriority(_bizsolESMSConnectionDetails, Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetHighPriority")]
+        public async Task<IActionResult> GetHighPriority(string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IDashboard.GetHighPriority(_bizsolESMSConnectionDetails, Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetEmployeeEfficiency")]
+        public async Task<IActionResult> GetEmployeeEfficiency(string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IDashboard.GetEmployeeEfficiency(_bizsolESMSConnectionDetails, Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetEMPLOYEEWORKEDHOURS")]
+        public async Task<IActionResult> GetEMPLOYEEWORKEDHOURS(string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IDashboard.GetEMPLOYEEWORKEDHOURS(_bizsolESMSConnectionDetails, Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetCLIENTWORKEDHOURS")]
+        public async Task<IActionResult> GetCLIENTWORKEDHOURS(string Mode, string FromDate, string ToDate, int UserMaster_Code, string? EmployeeMaster_Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IDashboard.GetCLIENTWORKEDHOURS(_bizsolESMSConnectionDetails, Mode, FromDate, ToDate, UserMaster_Code, EmployeeMaster_Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
