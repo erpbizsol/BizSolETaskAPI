@@ -1,3 +1,5 @@
+using Bizsol_ESMS_API.Interface;
+using Bizsol_ESMS_API.Service;
 using BizsolETask_Api.Interface;
 using BizsolETask_Api.Services;
 using Newtonsoft.Json;
@@ -32,6 +34,8 @@ builder.Services.AddTransient<IEmail,EmailService>();
 builder.Services.AddTransient<IEmployeeAttandance,EmployeeAttandanceService>();
 builder.Services.AddTransient<IDashboard,DashboardService>();
 builder.Services.AddTransient<ITicketsRatingPending,TicketsRatingPendingService>();
+builder.Services.AddTransient<IHolidayMaster,HolidayMasterService>();
+builder.Services.AddTransient<ICurrentDate,CurrentDateService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

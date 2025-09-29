@@ -1,8 +1,11 @@
-﻿using BizsolETask_Api.Interface;
+﻿using Bizsol_ESMS_API.Interface;
+using Bizsol_ESMS_API.Model;
+using BizsolETask_Api.Interface;
 using BizsolETask_Api.Models;
 using BizsolETask_Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static BizsolETask_Api.Services.EmployeeMasterService;
 
 namespace BizsolETask_Api.Controllers
 {
@@ -21,8 +24,10 @@ namespace BizsolETask_Api.Controllers
         private readonly IPendingTask _IPendingTask;
         private readonly IEmployeeAttandance _IEmployeeAttandance;
         private readonly ITicketsRatingPending _ITicketsRatingPending;
+        private readonly IHolidayMaster _iHolidayMaster;
+        private readonly ICurrentDate _ICurrentDate;
         public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask
-        ,IPendingTask pendingTask,IEmployeeAttandance employeeAttandance, ITicketsRatingPending _iTicketsRatingPending)
+        ,IPendingTask pendingTask,IEmployeeAttandance employeeAttandance, ITicketsRatingPending _iTicketsRatingPending, IHolidayMaster _HolidayMaster, ICurrentDate _CurrentDate)
         {
            
             _UserModuleMaster = IUserModuleMaster;
@@ -36,8 +41,10 @@ namespace BizsolETask_Api.Controllers
             _IPendingTask= pendingTask;
             _IEmployeeAttandance = employeeAttandance;
             _ITicketsRatingPending = _iTicketsRatingPending;
+            _iHolidayMaster = _HolidayMaster;
+            _ICurrentDate = _CurrentDate;
         }
-
+        
         #region EmployeeMaster
 
         [HttpGet]
@@ -1535,8 +1542,180 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
-     
+
         #endregion TicketsRatingPending
 
+        #region SaveConfig
+        [HttpPost]
+        [Route("SaveConfigMaster")]
+        public async Task<IActionResult> SaveConfigMaster([FromBody] ConfigMasterRequest Configrequest)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _EmployeeMasterMaster.SaveConfigMaster(_bizsolESMSConnectionDetails, Configrequest);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("ShowConfig")]
+        public async Task<IActionResult> ShowConfig()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _EmployeeMasterMaster.ShowConfig(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion SaveConfig
+
+        #region HolidayMaster
+        [HttpPost]
+        [Route("SaveHolidayMaster")]
+        public async Task<IActionResult> SaveHolidayMaster([FromBody] TY_HolidayMaster HolidayMaster)
+        {
+
+            try
+            {
+                var BizsolETaskConnectionString = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (BizsolETaskConnectionString.ConnectionSql != null)
+                {
+                    var result = await _iHolidayMaster.SaveHolidayMaster(BizsolETaskConnectionString, HolidayMaster);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetHolidayMasterList")]
+        public async Task<IActionResult> GetHolidayMaster()
+        {
+            try
+            {
+                var BizsolETaskConnectionString = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (BizsolETaskConnectionString.ConnectionSql != null)
+                {
+                    var result = await _iHolidayMaster.GetHolidayMasterList(BizsolETaskConnectionString);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetHolidayMasterByCode")]
+        public async Task<IActionResult> GetHolidayMasterByCode(int Code)
+        {
+
+            try
+            {
+                var BizsolETaskConnectionString = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (BizsolETaskConnectionString.ConnectionSql != null)
+                {
+                    var result = await _iHolidayMaster.GetHolidayMasterByCode(BizsolETaskConnectionString, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("DeleteHolidayMaster")]
+        public async Task<IActionResult> DeleteHolidayMaster(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _iHolidayMaster.DeleteHolidayMaster(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        #endregion HolidayMaster
+
+        #region CurrentDate
+
+        [HttpGet]
+        [Route("GetCurrentDate")]
+        public async Task<IActionResult> GetCurrentDate()
+        {
+            try
+            {
+                var bizsolETaskConnectionString = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (bizsolETaskConnectionString.ConnectionSql != null)
+                {
+                    var result = await _ICurrentDate.GetCurrentDate(bizsolETaskConnectionString);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        #endregion CurrentDate
     }
 }

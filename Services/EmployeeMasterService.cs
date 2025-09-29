@@ -138,6 +138,41 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public class ConfigMasterRequest
+        {
+            public int Code { get; set; }
+            public string ClientMaster { get; set; }
+            public string WorkType { get; set; }
+        }
+        public async Task<dynamic> SaveConfigMaster(BizsolETaskConnectionString bizsolESMSConnectionDetails , ConfigMasterRequest Configrequest)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "SAVE");
+                parameters.Add("Code", Configrequest.Code);
+                parameters.Add("ClientMaster", Configrequest.ClientMaster);
+                parameters.Add("WorkType", Configrequest.WorkType);
+                var result = await conn.QueryAsync<dynamic>("USP_ConfigMaster", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
+        public async Task<IEnumerable<dynamic>> ShowConfig(BizsolETaskConnectionString bizsolESMSConnectionDetails)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "SHOW");
+                parameters.Add("Code", 0);
+                parameters.Add("ClientMaster", "");
+                parameters.Add("WorkType","");
+                var result = await conn.QueryAsync<dynamic>("USP_ConfigMaster", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
 
     }
+    
 }
