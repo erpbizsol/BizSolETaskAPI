@@ -21,5 +21,8 @@ namespace BizsolETask_Api.Interface
         public abstract Task<IEnumerable<dynamic>> DateWiseUserWiseTime(BizsolETaskConnectionString BizsolETaskConnectionString, int TickatNo);
         public abstract Task<IEnumerable<dynamic>> GetGenerateTaskTicketDatePending(BizsolETaskConnectionString bizsolESMSConnectionDetails, string EmployeeName, string Status, string ticketNo, string ReportType, string? FromDate, string? ToDate);
         public abstract Task<IEnumerable<dynamic>> GetAssignedss(BizsolETaskConnectionString BizsolETaskConnectionString);
+        public abstract Task<IEnumerable<dynamic>> GetTaskNatureMaster(BizsolETaskConnectionString BizsolETaskConnectionString);
+        public abstract Task<dynamic> GetTicketNolist(BizsolETaskConnectionString BizsolETaskConnectionString, int TickatN);
+
     }
 }

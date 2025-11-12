@@ -1,8 +1,9 @@
-﻿using BizsolETask_Api.Models;
+﻿using BizsolETask_Api.Interface;
+using BizsolETask_Api.Models;
 using Dapper;
-using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System.Data;
-using BizsolETask_Api.Interface;
+using System.Data.SqlClient;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BizsolETask_Api.Services
@@ -15,11 +16,20 @@ namespace BizsolETask_Api.Services
         public string Remark { get; set; }
         public int EmployeeCode { get; set; }
         public int UserMaster_Code { get; set; }
-       
+
     }
-    public class TicketsRatingPendingService: ITicketsRatingPending
+    public class TicketRatingModel
     {
-        public async Task<IEnumerable<dynamic>> GetTicketsRatingPending(BizsolETaskConnectionString bizsolESMSConnectionDetails,string ReportType,string? FromDate, string? ToDate)
+        public int CallTicketMaster_Code { get; set; }
+        public int EmployeeMaster_Code { get; set; }
+        public int Star { get; set; }
+        public int UserMaster_Code { get; set; }
+        public string RatingRemark { get; set; }
+    }
+      
+    public class TicketsRatingPendingService : ITicketsRatingPending
+    {
+        public async Task<IEnumerable<dynamic>> GetTicketsRatingPending(BizsolETaskConnectionString bizsolESMSConnectionDetails, string ReportType, string? FromDate, string? ToDate)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {
@@ -71,6 +81,48 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
-       
+
+        public async Task<dynamic> SaveTicketsRatingAll(BizsolETaskConnectionString bizsolESMSConnectionDetails, List<TicketRatingModel> ticketsRating)
+        {
+            using (SqlConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                await conn.OpenAsync();
+
+                foreach (var item in ticketsRating)
+                {
+                    string query = @"
+                IF EXISTS (SELECT 1 FROM TicketsRatingMaster 
+                           WHERE CallTicketMaster_Code = @CallTicketMaster_Code 
+                             AND CreatedBy = @EmployeeMaster_Code)
+                BEGIN
+                    UPDATE TicketsRatingMaster
+                    SET Star = @Star, Remark = @RatingRemark, ModifiedOn = GETDATE()
+                    WHERE CallTicketMaster_Code = @CallTicketMaster_Code 
+                      AND CreatedBy = @EmployeeMaster_Code
+                END
+                ELSE
+                BEGIN
+                    INSERT INTO TicketsRatingMaster 
+                        (CallTicketMaster_Code, CreatedBy, Star, Remark, CreatedOn)
+                    VALUES (@CallTicketMaster_Code, @EmployeeMaster_Code, @Star, @RatingRemark, GETDATE())
+                END";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@CallTicketMaster_Code", item.CallTicketMaster_Code);
+                        cmd.Parameters.AddWithValue("@EmployeeMaster_Code", item.EmployeeMaster_Code);
+                        cmd.Parameters.AddWithValue("@Star", item.Star);
+                        cmd.Parameters.AddWithValue("@RatingRemark", item.RatingRemark ?? "");
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+
+            // ✅ Always return something meaningful
+            return new { Message = "Ratings saved successfully" };
+        }
+
+
+
     }
 }

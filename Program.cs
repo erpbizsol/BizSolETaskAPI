@@ -36,6 +36,7 @@ builder.Services.AddTransient<IDashboard,DashboardService>();
 builder.Services.AddTransient<ITicketsRatingPending,TicketsRatingPendingService>();
 builder.Services.AddTransient<IHolidayMaster,HolidayMasterService>();
 builder.Services.AddTransient<ICurrentDate,CurrentDateService>();
+builder.Services.AddTransient<ITaskNatureMaster, TaskNatureMasterService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

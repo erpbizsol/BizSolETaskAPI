@@ -26,8 +26,9 @@ namespace BizsolETask_Api.Controllers
         private readonly ITicketsRatingPending _ITicketsRatingPending;
         private readonly IHolidayMaster _iHolidayMaster;
         private readonly ICurrentDate _ICurrentDate;
+        private readonly ITaskNatureMaster _TaskNatureMaster;
         public MasterController(IUserModuleMaster IUserModuleMaster, IEmployeeMaster employeeMasterMaster, IStatusMaster statusMaster, IWorkTypeMaster workTypeMaster, IEmployeeRatePerHourDetails employeeRatePerHourDetails, IClientMaster clientMaster, ITimeSheet iTimeSheet, IGenerateTask iGenerateTask
-        ,IPendingTask pendingTask,IEmployeeAttandance employeeAttandance, ITicketsRatingPending _iTicketsRatingPending, IHolidayMaster _HolidayMaster, ICurrentDate _CurrentDate)
+        ,IPendingTask pendingTask,IEmployeeAttandance employeeAttandance, ITaskNatureMaster taskNatureMaster, ITicketsRatingPending _iTicketsRatingPending, IHolidayMaster _HolidayMaster, ICurrentDate _CurrentDate)
         {
            
             _UserModuleMaster = IUserModuleMaster;
@@ -43,6 +44,7 @@ namespace BizsolETask_Api.Controllers
             _ITicketsRatingPending = _iTicketsRatingPending;
             _iHolidayMaster = _HolidayMaster;
             _ICurrentDate = _CurrentDate;
+            _TaskNatureMaster = taskNatureMaster;
         }
         
         #region EmployeeMaster
@@ -893,6 +895,28 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("GetTicketNolist")]
+        public async Task<IActionResult> GetTicketNolist(int TickatN)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetTicketNolist(_bizsolESMSConnectionDetails, TickatN);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
         [HttpGet]
         [Route("GetPriorityDetails")]
@@ -1235,6 +1259,28 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("GetTaskNatureMaster")]
+        public async Task<IActionResult> GetTaskNatureMaster()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetTaskNatureMaster(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion GenerateTask
 
         #region PendingTask
@@ -1541,6 +1587,28 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+     
+        [HttpPost("SaveTicketsRatingAll")]
+        public async Task<IActionResult> SaveTicketsRatingAll([FromBody] List<TicketRatingModel> ratings)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITicketsRatingPending.SaveTicketsRatingAll(_bizsolESMSConnectionDetails, ratings);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
 
         #endregion TicketsRatingPending
@@ -1717,5 +1785,100 @@ namespace BizsolETask_Api.Controllers
         }
 
         #endregion CurrentDate
+
+        #region TaskNatureMaster
+        [HttpGet]
+        [Route("GetTaskNatureMasterList")]
+        public async Task<IActionResult> GetTaskNatureMasterList()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _TaskNatureMaster.GetTaskNatureMasterList(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetTaskNatureMasterByCode")]
+        public async Task<IActionResult> GetTaskNatureMasterByCode(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _TaskNatureMaster.GetTaskNatureMasterByCode(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveTaskNatureMaster")]
+        public async Task<IActionResult> SaveTaskNatureMaster([FromBody] TY_TaskNatureMaster TaskNatureMaster)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _TaskNatureMaster.SaveTaskNatureMaster(_bizsolESMSConnectionDetails, TaskNatureMaster);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("DeleteTaskNatureMaster")]
+        public async Task<IActionResult> DeleteTaskNatureMaster(int Code)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _TaskNatureMaster.DeleteTaskNatureMaster(_bizsolESMSConnectionDetails, Code);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion TaskNatureMaster
+
     }
 }
