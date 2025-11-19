@@ -5,7 +5,11 @@ using BizsolETask_Api.Models;
 using BizsolETask_Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Data.SqlClient;
 using static BizsolETask_Api.Services.EmployeeMasterService;
+using static BizsolETask_Api.Services.PendingTaskService;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace BizsolETask_Api.Controllers
 {
@@ -1376,7 +1380,52 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
-
+        [HttpGet]
+        [Route("GetCallTicketMasterPlanningDetails")]
+        public async Task<IActionResult> GetCallTicketMasterPlanningDetails(int EmployeeCode, string Year, int WeekNo)
+        {
+            try
+            {
+                var connDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (connDetails.ConnectionSql != null)
+                {
+                    var result = await _IPendingTask.GetCallTicketMasterPlanningDetails(connDetails, EmployeeCode, Year, WeekNo);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+       
+     
+        [HttpPost]
+        [Route("UpdateCallTicketMasterPlanning")]
+        public async Task<IActionResult> UpdateCallTicketMasterPlanning([FromBody] UpdateCallTicketPlanningRequest req)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IPendingTask.UpdateCallTicketMasterPlanning(_bizsolESMSConnectionDetails, req);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion PendingTask
 
         #region  EmployeeAttandance

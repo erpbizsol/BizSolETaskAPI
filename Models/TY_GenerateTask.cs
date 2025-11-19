@@ -40,7 +40,5 @@ namespace BizsolETask_Api.Models
         public string? TicketTypeText { get; set; }
         public int TaskNatureMaster_Code { get; set; }
     }
-
-  
 }
 
