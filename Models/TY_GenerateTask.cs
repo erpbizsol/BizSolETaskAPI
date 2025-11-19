@@ -10,7 +10,7 @@ namespace BizsolETask_Api.Models
         public int EmployeeMaster_Code { get; set; }
         public string? LogDate { get; set; } 
         public int ClientMaster_Code { get; set; }
-        //public int ModuleMaster_Code { get; set; }
+        public int ModuleMaster_Code { get; set; }
         public int BizSolUserMaster_Code { get; set; }
         //public int SourceMaster_Code { get; set; }
         public string? Description { get; set; }

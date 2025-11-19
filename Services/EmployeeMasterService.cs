@@ -145,6 +145,7 @@ namespace BizsolETask_Api.Services
             public string WorkType { get; set; }
             public string Priority { get; set; }
             public string TaskNature { get; set; }
+            public string MenuName { get; set; }
         }
         public async Task<dynamic> SaveConfigMaster(BizsolETaskConnectionString bizsolESMSConnectionDetails , ConfigMasterRequest Configrequest)
         {
@@ -157,6 +158,7 @@ namespace BizsolETask_Api.Services
                 parameters.Add("WorkType", Configrequest.WorkType);
                 parameters.Add("Priority", Configrequest.Priority);
                 parameters.Add("TaskNature", Configrequest.TaskNature);
+                parameters.Add("MenuName", Configrequest.MenuName);
                 var result = await conn.QueryAsync<dynamic>("USP_ConfigMaster", parameters, commandType: CommandType.StoredProcedure);
 
                 return result.ToList();
@@ -173,6 +175,7 @@ namespace BizsolETask_Api.Services
                 parameters.Add("WorkType","");
                 parameters.Add("Priority", "");
                 parameters.Add("TaskNature", "");
+                parameters.Add("MenuName", "");
                 var result = await conn.QueryAsync<dynamic>("USP_ConfigMaster", parameters, commandType: CommandType.StoredProcedure);
 
                 return result.ToList();

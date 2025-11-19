@@ -23,6 +23,7 @@ namespace BizsolETask_Api.Interface
         public abstract Task<IEnumerable<dynamic>> GetAssignedss(BizsolETaskConnectionString BizsolETaskConnectionString);
         public abstract Task<IEnumerable<dynamic>> GetTaskNatureMaster(BizsolETaskConnectionString BizsolETaskConnectionString);
         public abstract Task<dynamic> GetTicketNolist(BizsolETaskConnectionString BizsolETaskConnectionString, int TickatN);
+        public abstract Task<IEnumerable<dynamic>> GetMenuName(BizsolETaskConnectionString BizsolETaskConnectionString);
 
     }
 }
