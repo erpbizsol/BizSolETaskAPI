@@ -77,6 +77,8 @@ namespace BizsolETask_Api.Services
             public int? AssignedEmployeeCode { get; set; }
             public int? PlanPriority { get; set; }
             public string? PlanDate { get; set; }
+            public int? Year { get; set; }
+            public int? WeekNo { get; set; }
             public int? StatusName { get; set; }
             public string? RequiredPlanDiscuss { get; set; }
         }
@@ -139,7 +141,22 @@ namespace BizsolETask_Api.Services
                 {
                     parameters.Add("RequiredPlanDiscuss", null);
                 }
-
+                if (req.Year.HasValue)
+                {
+                    parameters.Add("Year", req.Year);
+                }
+                else
+                {
+                    parameters.Add("Year", null);
+                }
+                if (req.WeekNo.HasValue)
+                {
+                    parameters.Add("WeekNo", req.WeekNo.Value);
+                }
+                else
+                {
+                    parameters.Add("WeekNo", null);
+                }
                 var result = await conn.QueryAsync<dynamic>("USP_UpdateCallTicketMaster_Planning", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
                 //DynamicParameters parameters = new DynamicParameters();
