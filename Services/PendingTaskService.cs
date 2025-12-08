@@ -82,7 +82,6 @@ namespace BizsolETask_Api.Services
             public int? StatusName { get; set; }
             public string? RequiredPlanDiscuss { get; set; }
         }
-
         public async Task<dynamic> UpdateCallTicketMasterPlanning(BizsolETaskConnectionString bizsolESMSConnectionDetails, UpdateCallTicketPlanningRequest req)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
@@ -155,20 +154,12 @@ namespace BizsolETask_Api.Services
                 }
                 else
                 {
-                    parameters.Add("WeekNo", null);
+                    parameters.Add("WeekNo", null); 
                 }
                 var result = await conn.QueryAsync<dynamic>("USP_UpdateCallTicketMaster_Planning", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
-                //DynamicParameters parameters = new DynamicParameters();
-                //parameters.Add("Code", EmployeeCode);
-                //parameters.Add("AssignedEmployeeCode", Year);
-                //parameters.Add("PlanPriority", WeekNo);
-                //parameters.Add("PlanDate", WeekNo);
-                //var result = await conn.QueryAsync<dynamic>("USP_UpdateCallTicketMaster_Planning", parameters, commandType: CommandType.StoredProcedure);
-                //return result.ToList();
+               
             }
         }
-
-
     }
 }

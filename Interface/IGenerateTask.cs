@@ -1,4 +1,7 @@
 ﻿using BizsolETask_Api.Models;
+using Dapper;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace BizsolETask_Api.Interface
 {
@@ -24,6 +27,9 @@ namespace BizsolETask_Api.Interface
         public abstract Task<IEnumerable<dynamic>> GetTaskNatureMaster(BizsolETaskConnectionString BizsolETaskConnectionString);
         public abstract Task<dynamic> GetTicketNolist(BizsolETaskConnectionString BizsolETaskConnectionString, int TickatN);
         public abstract Task<IEnumerable<dynamic>> GetMenuName(BizsolETaskConnectionString BizsolETaskConnectionString);
+        public abstract Task<IEnumerable<dynamic>> GetEmployeeWiseUserName(BizsolETaskConnectionString BizsolETaskConnectionString, string Code);
+        public abstract Task<IEnumerable<dynamic>> GetUserName(BizsolETaskConnectionString BizsolETaskConnectionString, string Code);
 
+      
     }
 }

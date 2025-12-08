@@ -254,6 +254,29 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetEmployeeWiseUserName(BizsolETaskConnectionString bizsolESMSConnectionDetails, string Code)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Code", Code);
+                var result = await conn.QueryAsync<dynamic>("USP_EmpWiseClientList_Test", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
+        public async Task<IEnumerable<dynamic>> GetUserName(BizsolETaskConnectionString bizsolESMSConnectionDetails, string UserName)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("UserName", UserName);
+                var result = await conn.QueryAsync<dynamic>("USP_UserDate", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
+
 
     }
 
