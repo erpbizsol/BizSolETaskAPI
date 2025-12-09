@@ -13,5 +13,6 @@
         public int UserMaster_Code { get; set; } 
         public int Numberofdays { get; set; } 
         public decimal WorkingHours { get; set; } 
+        public string Role { get; set; } 
     }
 }

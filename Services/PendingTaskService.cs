@@ -161,5 +161,15 @@ namespace BizsolETask_Api.Services
                
             }
         }
+        public async Task<IEnumerable<dynamic>> GetReason(BizsolETaskConnectionString bizsolESMSConnectionDetails)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                var result = await conn.QueryAsync<dynamic>("USP_GetReason", parameters, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
     }
 }

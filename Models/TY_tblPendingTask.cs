@@ -10,6 +10,7 @@
         public int ResolvedBy { get; set; } = 0;
         public int UpdateBy { get; set; } = 0;
         public string Remarks { get; set; }
+        public int ReasonMaster_Code { get; set; }
         public int UserMaster_Code { get; set; }
         
     }

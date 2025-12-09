@@ -1378,6 +1378,29 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetReason")]
+        public async Task<IActionResult> GetReason()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IPendingTask.GetReason(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("GetStatusType")]
         public async Task<IActionResult> GetStatusType(int Code)
