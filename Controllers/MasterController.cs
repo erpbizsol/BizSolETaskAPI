@@ -1380,14 +1380,14 @@ namespace BizsolETask_Api.Controllers
 
         [HttpGet]
         [Route("GetReason")]
-        public async Task<IActionResult> GetReason()
+        public async Task<IActionResult> GetReason(int EmployeeCode)
         {
             try
             {
                 var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
                 if (_bizsolESMSConnectionDetails.ConnectionSql != null)
                 {
-                    var result = await _IPendingTask.GetReason(_bizsolESMSConnectionDetails);
+                    var result = await _IPendingTask.GetReason(_bizsolESMSConnectionDetails, EmployeeCode);
                     return Ok(result);
                 }
                 else
