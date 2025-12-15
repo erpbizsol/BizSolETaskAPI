@@ -81,6 +81,7 @@ namespace BizsolETask_Api.Services
             public int? WeekNo { get; set; }
             public int? StatusName { get; set; }
             public string? RequiredPlanDiscuss { get; set; }
+            public int? TaskNatureMaster_Code { get; set; }
         }
         public async Task<dynamic> UpdateCallTicketMasterPlanning(BizsolETaskConnectionString bizsolESMSConnectionDetails, UpdateCallTicketPlanningRequest req)
         {
@@ -156,6 +157,7 @@ namespace BizsolETask_Api.Services
                 {
                     parameters.Add("WeekNo", null); 
                 }
+                parameters.Add("TaskNatureMaster_Code", req.TaskNatureMaster_Code);
                 var result = await conn.QueryAsync<dynamic>("USP_UpdateCallTicketMaster_Planning", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
                
