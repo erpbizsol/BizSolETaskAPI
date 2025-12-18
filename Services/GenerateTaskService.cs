@@ -212,7 +212,7 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
-        public async Task<IEnumerable<dynamic>> DateWiseUserWiseTime(BizsolETaskConnectionString bizsolESMSConnectionDetails, int TickatNo)
+        public async Task<IEnumerable<dynamic>> DateWiseUserWiseTime(BizsolETaskConnectionString bizsolESMSConnectionDetails, string TickatNo)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
             {

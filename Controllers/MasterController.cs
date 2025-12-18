@@ -1242,7 +1242,7 @@ namespace BizsolETask_Api.Controllers
 
         [HttpGet]
         [Route("DateWiseUserWiseTime")]
-        public async Task<IActionResult> DateWiseUserWiseTime(int TickatNo)
+        public async Task<IActionResult> DateWiseUserWiseTime(string TickatNo)
         {
             try
             {
