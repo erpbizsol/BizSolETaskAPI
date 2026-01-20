@@ -8,6 +8,7 @@ namespace BizsolETask_Api.Services
 {
     public class StatusMasterService:IStatusMaster
     {
+      
         public async Task<IEnumerable<dynamic>> GetStatusMasterList(BizsolETaskConnectionString bizsolESMSConnectionDetails)
         {
             using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
