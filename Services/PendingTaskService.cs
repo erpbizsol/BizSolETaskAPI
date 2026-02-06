@@ -41,6 +41,7 @@ namespace BizsolETask_Api.Services
 
                 parameters.Add("Mode", "SAVEDATA");
                 parameters.Add("Code", PendingTaskMaster.PendingTask.FirstOrDefault().Code);
+                parameters.Add("UserMaster_Code", PendingTaskMaster.PendingTask.FirstOrDefault().UserMaster_Code);
                 parameters.Add("PendingTask", CommonFunctions.MapModelToProcedureTypeDataTable(PendingTaskMaster.PendingTask, TY_STRUCTUREArry[0]).AsTableValuedParameter());
                 parameters.Add("Attachments", CommonFunctions.MapModelToProcedureTypeDataTable(PendingTaskMaster.Attachment, TY_STRUCTUREArry[1]).AsTableValuedParameter());
                 var result = await conn.QueryAsync<dynamic>("USP_CallTicketUpdate_Developer_New", parameters, commandType: CommandType.StoredProcedure);
