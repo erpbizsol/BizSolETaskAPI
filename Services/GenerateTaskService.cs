@@ -276,7 +276,17 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetClientWiseTestedBy(BizsolETaskConnectionString bizsolESMSConnectionDetails,int ClientCode)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("ClientCode", ClientCode);
+                var result = await conn.QueryAsync<dynamic>("USP_ClientWiseTestedBy", parameters, commandType: CommandType.StoredProcedure);
 
+                return result.ToList();
+            }
+        }
 
     }
 

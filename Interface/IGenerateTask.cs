@@ -8,6 +8,7 @@ namespace BizsolETask_Api.Interface
     public interface IGenerateTask
     {
         public abstract Task<IEnumerable<dynamic>> GetTicketType(BizsolETaskConnectionString BizsolETaskConnectionString);
+        public abstract Task<IEnumerable<dynamic>> GetClientWiseTestedBy(BizsolETaskConnectionString BizsolETaskConnectionString,int ClientCode);
         public abstract Task<IEnumerable<dynamic>> GetTicketNo(BizsolETaskConnectionString BizsolETaskConnectionString);
         public abstract Task<IEnumerable<dynamic>> GetPriorityDetails(BizsolETaskConnectionString BizsolETaskConnectionString);
         public abstract Task<IEnumerable<dynamic>> GetClientMasterDetails(BizsolETaskConnectionString BizsolETaskConnectionString);

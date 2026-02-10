@@ -1352,6 +1352,29 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetClientWiseTestedBy")]
+        public async Task<IActionResult> GetClientWiseTestedBy(int ClientCode)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetClientWiseTestedBy(_bizsolESMSConnectionDetails, ClientCode);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion GenerateTask
 
         #region PendingTask
