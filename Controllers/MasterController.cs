@@ -1375,6 +1375,51 @@ namespace BizsolETask_Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetClientStatus")]
+        public async Task<IActionResult> GetClientStatus(int ClientCode)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetClientStatus(_bizsolESMSConnectionDetails, ClientCode);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetNoofPendingTktForClientRating")]
+        public async Task<IActionResult> GetNoofPendingTktForClientRating(int ClientCode)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _IGenerateTask.GetNoofPendingTktForClientRating(_bizsolESMSConnectionDetails, ClientCode);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion GenerateTask
 
         #region PendingTask
@@ -1772,7 +1817,50 @@ namespace BizsolETask_Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetPendingUnRatingTicket")]
+        public async Task<IActionResult> GetPendingUnRatingTicket()
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITicketsRatingPending.GetPendingUnRatingTicket(_bizsolESMSConnectionDetails);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
+        [HttpPost("UpdateEmail")]
+        public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailRequest request)
+        {
+            try
+            {
+                var _bizsolESMSConnectionDetails = CommonFunctions.InitializeERPConnection(HttpContext);
+                if (_bizsolESMSConnectionDetails.ConnectionSql != null)
+                {
+                    var result = await _ITicketsRatingPending.UpdateEmail(_bizsolESMSConnectionDetails, request);
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, "Error To Fetch Connection String");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
         #endregion TicketsRatingPending
 
         #region SaveConfig

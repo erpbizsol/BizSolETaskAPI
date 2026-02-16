@@ -30,6 +30,8 @@ namespace BizsolETask_Api.Interface
         public abstract Task<IEnumerable<dynamic>> GetMenuName(BizsolETaskConnectionString BizsolETaskConnectionString);
         public abstract Task<IEnumerable<dynamic>> GetEmployeeWiseUserName(BizsolETaskConnectionString BizsolETaskConnectionString, string Code);
         public abstract Task<IEnumerable<dynamic>> GetUserName(BizsolETaskConnectionString BizsolETaskConnectionString, string Code);
+        public abstract Task<IEnumerable<dynamic>> GetClientStatus(BizsolETaskConnectionString BizsolETaskConnectionString, int ClientCode);
+        public abstract Task<IEnumerable<dynamic>> GetNoofPendingTktForClientRating(BizsolETaskConnectionString BizsolETaskConnectionString, int ClientCode);
 
       
     }

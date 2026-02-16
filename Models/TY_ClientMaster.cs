@@ -9,5 +9,7 @@ namespace BizsolETask_Api.Models
         public string? DefaultEmails { get; set; } = "";
         public string? Employee_Codes { get; set; } = "";
         public int UserMaster_Code { get; set; }
+        public string ClientStatus { get; set; } = "Y";
+        public int AllowPendingTktRating { get; set; }
     }
 }

@@ -9,7 +9,9 @@ namespace BizsolETask_Api.Interface
         public abstract Task<dynamic> SaveTicketsRating(BizsolETaskConnectionString BizsolETaskConnectionString, TicketsRating ticketsRating);
         public abstract Task<dynamic> GetTicketsRatingByCode(BizsolETaskConnectionString BizsolETaskConnectionString, int CallTicketMaster_Code);
         public abstract Task<dynamic> TICKETSRATING(BizsolETaskConnectionString BizsolETaskConnectionString, int UserMastre_Code);
-        Task<dynamic> SaveTicketsRatingAll(BizsolETaskConnectionString bizsolESMSConnectionDetails, List<TicketRatingModel> ratings);
+        public Task<dynamic> SaveTicketsRatingAll(BizsolETaskConnectionString bizsolESMSConnectionDetails, List<TicketRatingModel> ratings);
+        public abstract Task<IEnumerable<dynamic>> GetPendingUnRatingTicket(BizsolETaskConnectionString BizsolETaskConnectionString);
+        public Task<dynamic> UpdateEmail(BizsolETaskConnectionString bizsolESMSConnectionDetails, UpdateEmailRequest UpdateEmail);
 
     }
 }
