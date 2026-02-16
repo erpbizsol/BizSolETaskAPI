@@ -1,4 +1,4 @@
-﻿using BizsolETask_Api.Interface;
+using BizsolETask_Api.Interface;
 using BizsolETask_Api.Models;
 using Dapper;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +24,30 @@ namespace BizsolETask_Api.Services
 
                 return result.ToList();
             }
+        }
+
+        public async Task<SendEmailResult> SendEmail(BizsolETaskConnectionString bizsolESMSConnectionDetails, List<int> codes, string Mode = "RATING")
+        {
+            var result = new SendEmailResult();
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                foreach (int code in codes)
+                {
+                    try
+                    {
+                        var parameters = new DynamicParameters();
+                        parameters.Add("Code", code);
+                        parameters.Add("Mode", Mode);
+                        await conn.ExecuteAsync("USP_SendEmail", parameters, commandType: CommandType.StoredProcedure);
+                        result.SentCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        result.Errors.Add($"Code {code}: {ex.Message}");
+                    }
+                }
+            }
+            return result;
         }
     }
 }

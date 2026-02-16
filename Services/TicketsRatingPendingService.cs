@@ -122,7 +122,30 @@ namespace BizsolETask_Api.Services
             return new { Message = "Ratings saved successfully" };
         }
 
+        public async Task<IEnumerable<dynamic>> GetPendingUnRatingTicket(BizsolETaskConnectionString bizsolESMSConnectionDetails)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "GetPendingUnRatingTicket");
+                var result = await conn.QueryAsync<dynamic>("USP_TicketRatingDetail", parameters, commandType: CommandType.StoredProcedure);
 
+                return result.ToList();
+            }
+        }
+       
+        public async Task<dynamic> UpdateEmail(BizsolETaskConnectionString bizsolESMSConnectionDetails, UpdateEmailRequest UpdateEmail)
+        {
+            using (SqlConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "Updated");
+                parameters.Add("CallTicketMaster_Code", UpdateEmail.Code);
+                parameters.Add("Email", UpdateEmail.Email);
+                var result = await conn.QueryAsync<dynamic>("USP_TicketRatingDetail", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
 
     }
 }

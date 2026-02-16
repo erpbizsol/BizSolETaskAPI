@@ -57,6 +57,8 @@ namespace BizsolETask_Api.Services
                 parameters.Add("ClientName", ClientMaster.ClientName.Trim());
                 parameters.Add("DefaultEmails", ClientMaster.DefaultEmails.Trim());
                 parameters.Add("Employee_Codes", ClientMaster.Employee_Codes.Trim());
+                parameters.Add("ClientStatus", ClientMaster.ClientStatus.Trim());
+                parameters.Add("AllowPendingTktRating", ClientMaster.AllowPendingTktRating);
 
                 var result = await conn.QueryAsync<dynamic>("USP_ClientMaster", parameters, commandType: CommandType.StoredProcedure);
 

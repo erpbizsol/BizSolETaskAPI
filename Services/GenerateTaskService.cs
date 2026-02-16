@@ -287,7 +287,29 @@ namespace BizsolETask_Api.Services
                 return result.ToList();
             }
         }
+        public async Task<IEnumerable<dynamic>> GetClientStatus(BizsolETaskConnectionString bizsolESMSConnectionDetails, int ClientCode)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "CLIENTSTATUS");
+                parameters.Add("ClientCode", ClientCode);
+                var result = await conn.QueryAsync<dynamic>("USP_TicketRatingDetail", parameters, commandType: CommandType.StoredProcedure);
 
+                return result.ToList();
+            }
+        }
+        public async Task<IEnumerable<dynamic>> GetNoofPendingTktForClientRating(BizsolETaskConnectionString bizsolESMSConnectionDetails, int ClientCode)
+        {
+            using (IDbConnection conn = new SqlConnection(bizsolESMSConnectionDetails.ConnectionSql))
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("Mode", "GETNOOFPENDINGTKTFORCLIENTRATING");
+                parameters.Add("ClientCode", ClientCode);
+                var result = await conn.QueryAsync<dynamic>("USP_TicketRatingDetail", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
     }
 
 }
